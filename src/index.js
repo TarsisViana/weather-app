@@ -1,3 +1,6 @@
+import "./style.css";
+import { refreshCurrent } from "./DOMhandler";
+
 const img = document.querySelector("img");
 const button = document.querySelector("button");
 const input = document.querySelector("input");
