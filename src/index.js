@@ -6,6 +6,15 @@ const button = document.querySelector("button");
 const input = document.querySelector("input");
 const weatherKey = "de8a0865947147c09e3113845242704";
 const googleKey = "AIzaSyCD7FyTqZ7n8sLUT8_xt_vwtijaCruOdNo";
+const searchBtn = document.querySelector("button.search");
+const city = document.querySelector("input.search");
+
+searchBtn.addEventListener("click", async () => {
+  if (city.value) {
+    let weatherData = await getWeather(city.value);
+    refreshCurrent(weatherData);
+  }
+});
 
 navigator.geolocation.getCurrentPosition((position) => {
   let lat = position.coords.latitude;
@@ -15,16 +24,18 @@ navigator.geolocation.getCurrentPosition((position) => {
 
 const autoWeather = async function getWeatherAtCurrentLocation(lat, long) {
   let cityName = await getCity(lat, long);
-  getWeather(cityName);
+  let weatherData = await getWeather(cityName);
+  refreshCurrent(weatherData);
 };
 
-async function getWeather(input) {
-  let src = `https://api.weatherapi.com/v1/current.json?key=${weatherKey}&q=${input}`;
+async function getWeather(city) {
+  let src = `https://api.weatherapi.com/v1/current.json?key=${weatherKey}&q=${city}`;
 
   const response = await fetch(src, { mode: "cors" });
   const weatherData = await response.json();
 
   console.log(weatherData);
+  return weatherData;
 }
 
 async function getCity(lat, long) {
