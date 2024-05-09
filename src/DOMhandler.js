@@ -1,19 +1,5 @@
 import pubsub from "./pubsub";
 
-export { refreshCurrent };
-
-function refreshCurrent(data) {
-  const city = document.querySelector("h2.location");
-  const temp = document.querySelector("p.current.temp");
-  const icon = document.querySelector("img.current");
-
-  console.log(data);
-
-  city.textContent = data.location.name;
-  temp.textContent = `${data.current.temp_c}º C`;
-  icon.setAttribute("src", `https:${data.current.condition.icon}`);
-}
-
 (function startListeners() {
   const searchBtn = document.querySelector("button.search");
   const city = document.querySelector("input");
@@ -24,3 +10,25 @@ function refreshCurrent(data) {
     }
   });
 })();
+
+function refreshCurrent(data) {
+  const city = document.querySelector("h2.location");
+  const icon = document.querySelector("img.current");
+  const condition = document.querySelector("p.current.condition");
+  const temp = document.querySelector("p.current.temp");
+
+  city.textContent = data.location.name;
+  icon.setAttribute("src", getIcon(data));
+  condition.textContent = data.current.condition.text;
+  temp.textContent = `${data.current.temp_c}º C`;
+}
+
+function getIcon(data) {
+  const imgSrc = data.current.condition.icon;
+  const src = imgSrc.slice(imgSrc.lastIndexOf("/"));
+
+  if (data.current.is_day === 1) return `./icons/day${src}`;
+  if (data.current.is_day === 0) return `./icons/night${src}`;
+}
+
+export { refreshCurrent };
