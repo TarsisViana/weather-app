@@ -1,10 +1,10 @@
-var events = {
+const pubsub = {
   events: {},
-  on: function (eventName, fn) {
+  subscribe: function (eventName, fn) {
     this.events[eventName] = this.events[eventName] || [];
     this.events[eventName].push(fn);
   },
-  off: function (eventName, fn) {
+  unsubscribe: function (eventName, fn) {
     if (this.events[eventName]) {
       for (var i = 0; i < this.events[eventName].length; i++) {
         if (this.events[eventName][i] === fn) {
@@ -14,7 +14,7 @@ var events = {
       }
     }
   },
-  emit: function (eventName, data) {
+  publish: function (eventName, data) {
     if (this.events[eventName]) {
       this.events[eventName].forEach(function (fn) {
         fn(data);
@@ -22,3 +22,5 @@ var events = {
     }
   },
 };
+
+export default pubsub;

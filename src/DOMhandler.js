@@ -1,3 +1,5 @@
+import pubsub from "./pubsub";
+
 export { refreshCurrent };
 
 function refreshCurrent(data) {
@@ -11,3 +13,14 @@ function refreshCurrent(data) {
   console.log(`https:${data.current.condition.icon}`);
   icon.setAttribute("src", `https:${data.current.condition.icon}`);
 }
+
+(function startListeners() {
+  const searchBtn = document.querySelector("button.search");
+  const city = document.querySelector("input");
+
+  searchBtn.addEventListener("click", async () => {
+    if (city.value) {
+      pubsub.publish("citySearch", city.value);
+    }
+  });
+})();

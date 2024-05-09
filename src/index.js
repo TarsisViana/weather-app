@@ -1,19 +1,14 @@
 import "./style.css";
 import { refreshCurrent } from "./DOMhandler";
+import pubsub from "./pubsub";
 
-const img = document.querySelector("img");
-const button = document.querySelector("button");
-const input = document.querySelector("input");
 const weatherKey = "de8a0865947147c09e3113845242704";
 const googleKey = "AIzaSyCD7FyTqZ7n8sLUT8_xt_vwtijaCruOdNo";
 const searchBtn = document.querySelector("button.search");
-const city = document.querySelector("input.search");
 
-searchBtn.addEventListener("click", async () => {
-  if (city.value) {
-    let weatherData = await getWeather(city.value);
-    refreshCurrent(weatherData);
-  }
+pubsub.subscribe("citySearch", async function search(city) {
+  let weatherData = await getWeather(city);
+  refreshCurrent(weatherData);
 });
 
 navigator.geolocation.getCurrentPosition((position) => {
