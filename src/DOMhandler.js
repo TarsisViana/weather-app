@@ -8,9 +8,9 @@ function refreshCurrent(data) {
   const icon = document.querySelector("img.current");
 
   console.log(data);
+
   city.textContent = data.location.name;
-  temp.textContent = data.current.temp_c;
-  console.log(`https:${data.current.condition.icon}`);
+  temp.textContent = `${data.current.temp_c}º C`;
   icon.setAttribute("src", `https:${data.current.condition.icon}`);
 }
 
