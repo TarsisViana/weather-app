@@ -16,10 +16,21 @@ async function getWeather(city) {
     const weatherData = await response.json();
 
     console.log(weatherData);
+    lastWeather.set(weatherData);
     return weatherData;
   } catch (err) {
     console.log(err);
   }
 }
 
-export { getWeather };
+const lastWeather = {
+  weatherData: {},
+  set: function (data) {
+    this.weatherData = data;
+  },
+  get: function () {
+    return this.weatherData;
+  },
+};
+
+export { getWeather, lastWeather };
